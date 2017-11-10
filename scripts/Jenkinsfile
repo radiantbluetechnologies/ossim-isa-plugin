@@ -1,0 +1,98 @@
+#!groovy
+//==================================================================================================
+// This is the Jenkins pipeline script for building the OMAR GIT Mirror application.
+// Environment varialbes that MUST be passed in by Jenkins:
+//    OSSIM_GIT_BRANCH: The tag of the branch to be built. Typically dev or master.
+//
+// Environment varaibles that MUST be set in the Jenkins global environment (manage jenkins -> configure system -> environment varaibles)
+//    ARTIFACTORY_USER: The user to use when pushing artifacts
+//    ARTIFACTORY_PASSWORD: The password to use when pushing artifacts
+//    OPENSHIFT_USERNAME: The user to use logging into the docker registry
+//    OPENSHIFT_PASSWORD: The password to use logging into the docker registry
+//==================================================================================================
+
+def notifyObj
+node ( "" ) {
+    env.WORKSPACE = pwd()
+    env.MAKE_VERBOSE = "${ MAKE_VERBOSE }"
+    env.OSSIM_INSTALL_PREFIX = "${ env.WORKSPACE }/ossim"
+    env.MSP_INSTALL_DIR = "/usr/local/msp-1.5"
+    env.MSP_HOME = "/usr/local/msp-1.5"
+    try {
+        stage( "Checkout" ) {
+            dir( "ossim-ci" ) {
+                git branch: "${ OSSIM_GIT_BRANCH }", url: 'https://github.com/ossimlabs/ossim-ci.git'
+            }
+            dir( "ossim-isa-plugin" ) {
+                git branch: "${ OSSIM_GIT_BRANCH }", url: "https://github.com/radiantbluetechnologies/ossim-isa-plugin.git"
+            }
+            notifyObj = load "${ env.WORKSPACE }/ossim-ci/jenkins/pipeline/notify.groovy"
+        }
+
+        echo "WORKSPACE: ${ env.WORKSPACE }"
+
+        stage( "Download Artifacts" ) {
+            dir( "${ env.WORKSPACE }" ) {
+                step ([ $class: "CopyArtifact",
+                    projectName: "ossim-${ OSSIM_GIT_BRANCH }",
+                    filter: "artifacts/install.tgz",
+                    flatten: true ])
+            }
+        }
+
+        stage( "Build" ) {
+            sh """
+                echo "WORKSPACE            = ${env.WORKSPACE}"
+                echo "OSSIM_INSTALL_PREFIX = ${env.OSSIM_INSTALL_PREFIX}"
+                mkdir -p ${ env.OSSIM_INSTALL_PREFIX }
+                tar xfz install.tgz -C ${ env.OSSIM_INSTALL_PREFIX }
+                mv ${ env.OSSIM_INSTALL_PREFIX }/install/* ${ env.OSSIM_INSTALL_PREFIX }
+                 
+                rm -rf ${ env.WORKSPACE }/build/CMakeCache.txt
+                ${ env.WORKSPACE }/ossim-isa-plugin/scripts/buildNative.sh
+                cd ${ env.WORKSPACE }/ossim-isa-plugin
+                tar cvfz ossim-isa-plugin-install.tgz install
+            """
+        }
+
+        stage("Archive"){
+           dir( "ossim-isa-plugin" ) {
+              archiveArtifacts artifacts:"*.tgz"
+           }
+       }
+       stage("Deliver Artifacts"){
+            dir("${env.WORKSPACE}/ossim-isa-plugin"){
+
+              step([$class: 'S3BucketPublisher',
+                    dontWaitForConcurrentBuildCompletion: false,
+                    entries: [
+                               [bucket: "o2-delivery/${OSSIM_GIT_BRANCH}/ossim",
+                               excludedFile: '',
+                               flatten: false,
+                               gzipFiles: false,
+                               keepForever: false,
+                               managedArtifacts: false,
+                               noUploadOnFailure: false,
+                               selectedRegion: 'us-east-1',
+                               showDirectlyInBrowser: true,
+                               sourceFile: "*.tgz",
+                               storageClass: 'STANDARD',
+                               uploadFromSlave: false,
+                               useServerSideEncryption: false]],
+
+                    profileName: 'o2-cicd',
+                    userMetadata: []])
+            }
+       }
+    }
+
+    catch( e ) {
+        println "ERROR: ${e} "
+        currentBuild.result = "FAILED"
+        notifyObj?.notifyFailed()
+    }
+
+    stage( "Clean Workspace" ) {
+        step([ $class: 'WsCleanup' ])
+    }
+}

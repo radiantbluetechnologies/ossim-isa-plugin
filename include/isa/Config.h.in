@@ -1,0 +1,9 @@
+//**************************************************************************************************
+//
+//     OSSIM Open Source Geospatial Data Processing Library
+//     See top level LICENSE.txt file for license information
+//
+//**************************************************************************************************
+#define OSSIM_ISA_GIT_REVISION "@OSSIM_ISA_GIT_REVISION@"
+#define OSSIM_ISA_BUILD_DATE @OSSIM_ISA_BUILD_DATE@
+#define OSSIM_HAS_MSP @OSSIM_HAS_MSP@
