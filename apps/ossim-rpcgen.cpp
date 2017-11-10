@@ -13,7 +13,7 @@
 #include <ossim/projection/ossimRpcSolver.h>
 #include <sstream>
 #include <SensorModel/SensorModelService.h>
-#include <common/Image.h>
+#include <isa/common/Image.h>
 #include <ossim/base/ossimXmlDocument.h>
 
 using namespace std;

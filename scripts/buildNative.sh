@@ -27,7 +27,6 @@ echo "buildNative.sh: "
 echo "  OSSIM_DEV_HOME       = $OSSIM_DEV_HOME"
 echo "  OSSIM_INSTALL_PREFIX = $OSSIM_INSTALL_PREFIX"
 echo "  MSP_HOME             = $MSP_HOME"
-echo "  CSM_HOME             = $CSM_HOME"
 echo "  CMAKE_DIR            = $CMAKE_DIR"
 
 echo; echo "Generate makefiles."
@@ -35,7 +34,6 @@ cmake \
 -DCMAKE_BUILD_TYPE="RelWithDebug" \
 -DOSSIM_INSTALL_PREFIX=$OSSIM_INSTALL_PREFIX \
 -DOSSIM_DEV_HOME=$OSSIM_DEV_HOME \
--DCSM_HOME=$CSM_HOME \
 -DMSP_HOME=$MSP_HOME \
 -DCMAKE_INSTALL_PREFIX=$CMAKE_DIR/install \
 -DCMAKE_MODULE_PATH=$OSSIM_INSTALL_PREFIX/share/ossim/CMakeModules \
