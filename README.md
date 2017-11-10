@@ -1,5 +1,5 @@
-# ossim-msp
-Contains bridge code to MSP native libraries in support of 3DISA MERIT project. The relevant 3DISA functionality is exposed to a JNI via the ossim3DISA class (TBD).
+# ossim-isa-plugin
+Contains OSSIM plugin in support of 3DISA MERIT project. 
 
 Instructions for Building OSSIM with MSP
 
