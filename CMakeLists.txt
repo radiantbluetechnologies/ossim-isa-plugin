@@ -1,5 +1,5 @@
-PROJECT(ossim-isa)
-Message("################## Setting up ossim-isa  #########################")
+PROJECT(ossim-isa-plugin)
+Message("################## Setting up ossim-isa-plugin  #########################")
 
 cmake_minimum_required(VERSION 2.8)
 
@@ -75,7 +75,6 @@ IF(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
   ENDIF(GIT_FOUND)
 ENDIF(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
 TODAYS_DATE(OSSIM_ISA_BUILD_DATE)
-set(OSSIM_ISA_BUILD_DATE "\"${OSSIM_ISA_BUILD_DATE}\"")
 
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/include/isa/Config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/isa/Config.h @ONLY)
 
@@ -92,4 +91,4 @@ FILE(GLOB ossim_isa_json ${${PROJECT_NAME}_SOURCE_DIR}/share/ossim-isa/*.json)
 INSTALL(FILES ${ossim_isa_json} DESTINATION share/ossim/isa COMPONENT ossim)
 
 
-message("################## end of ossim-isa setup #########################")
+message("################## end of ossim-isa-plugin setup #########################")

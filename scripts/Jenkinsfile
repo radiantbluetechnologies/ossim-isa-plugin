@@ -50,13 +50,12 @@ node ( "" ) {
                  
                 rm -rf ${ env.WORKSPACE }/build/CMakeCache.txt
                 ${ env.WORKSPACE }/ossim-isa-plugin/scripts/buildNative.sh
-                cd ${ env.WORKSPACE }/ossim-isa-plugin
-                tar cvfz ossim-isa-plugin-install.tgz install
             """
         }
 
         stage("Archive"){
-           dir( "ossim-isa-plugin" ) {
+           dir( "${env.WORKSPACE}/ossim-isa-plugin" ) {
+              sh "tar cvfz ossim-isa-plugin-install.tgz install"
               archiveArtifacts artifacts:"*.tgz"
            }
        }
