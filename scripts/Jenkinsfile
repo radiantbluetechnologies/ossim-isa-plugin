@@ -55,7 +55,7 @@ node ( "" ) {
 
         stage("Archive"){
            dir( "${env.WORKSPACE}/ossim-isa-plugin" ) {
-              sh "tar cvfz ossim-isa-plugin-install.tgz install"
+              sh "tar cvfz ossim-isa-plugin-install.tgz -C install ."
               archiveArtifacts artifacts:"*.tgz"
            }
        }
