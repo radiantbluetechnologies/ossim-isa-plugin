@@ -1,4 +1,3 @@
-#!groovy
 //==================================================================================================
 // This is the Jenkins pipeline script for building the OMAR GIT Mirror application.
 // Environment varialbes that MUST be passed in by Jenkins:
@@ -18,6 +17,7 @@ node ( "" ) {
     env.OSSIM_INSTALL_PREFIX = "${ env.WORKSPACE }/ossim"
     env.MSP_INSTALL_DIR = "/usr/local/msp-1.5"
     env.MSP_HOME = "/usr/local/msp-1.5"
+    env.OPENCV_HOME="/usr/local/opencv-3.2"
     try {
         stage( "Checkout" ) {
             dir( "ossim-ci" ) {
