@@ -16,8 +16,3 @@ set_target_properties(ossim-mspsms PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_
 target_link_libraries( ossim-mspsms ${requiredLibs} )
 INSTALL(TARGETS ossim-mspsms RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR} BUNDLE DESTINATION ${INSTALL_RUNTIME_DIR} COMPONENT ossim)
 
-add_executable(ossim-rpcgen ossim-rpcgen.cpp )
-set_target_properties(ossim-rpcgen PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-target_link_libraries( ossim-rpcgen ${requiredLibs} )
-INSTALL(TARGETS ossim-rpcgen RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR} BUNDLE DESTINATION ${INSTALL_RUNTIME_DIR} COMPONENT ossim)
-
