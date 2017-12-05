@@ -113,7 +113,11 @@ void Image::loadJSON(const Json::Value& json_node)
       MSP::SMS::SensorModelService sms;
       csm::Model* base = sms.createModelFromState(modelState.c_str());
       m_csmModel = dynamic_cast<csm::RasterGM*>(base);
-      m_imageId = m_csmModel->getImageIdentifier();
+      string id = m_csmModel->getImageIdentifier();
+      if (id.compare("UNKNOWN"))
+         m_imageId = id;
+      else
+         m_csmModel->setImageIdentifier(m_imageId);
    }
    else
    {
@@ -156,9 +160,30 @@ void Image::saveJSON(Json::Value& json_node) const
 #if OSSIM_HAS_MSP
 void Image::setCsmSensorModel(const csm::RasterGM* model)
 {
-   m_csmModel = model;
-   //m_imageId = ossimString(model->getImageIdentifier()).trim().string();
-   m_imageId = model->getImageIdentifier();
+   ostringstream xmsg;
+   xmsg<<__FILE__<<": getCsmSensorModel() -- ";
+
+   try
+   {
+      MSP::SMS::SensorModelService sms;
+      csm::Model* base = sms.createModelFromState(model->getModelState().c_str());
+      m_csmModel = dynamic_cast<csm::RasterGM*>(base);
+      if (m_csmModel)
+      {
+         // Fetch the ID according to CSM, checking for "UNKNOWN":
+         string id = m_csmModel->getImageIdentifier();
+         if (id.compare("UNKNOWN"))
+            m_imageId = id;
+         else
+            m_csmModel->setImageIdentifier(m_imageId);
+      }
+   }
+   catch (exception& e)
+   {
+      xmsg<<"Caught exception: "<<e.what();
+      throw ossimException(xmsg.str());
+   }
+
    m_modelName = model->getModelName();
 }
 
@@ -183,7 +208,14 @@ const csm::RasterGM*  Image::getCsmSensorModel()
       m_csmModel = dynamic_cast<csm::RasterGM*>(base);
 
       if (m_csmModel)
-         m_imageId = m_csmModel->getImageIdentifier();
+      {
+         // Fetch the ID according to CSM, checking for "UNKNOWN":
+         string id = m_csmModel->getImageIdentifier();
+         if (id.compare("UNKNOWN"))
+            m_imageId = id;
+         else
+            m_csmModel->setImageIdentifier(m_imageId);
+      }
    }
    catch (exception& e)
    {

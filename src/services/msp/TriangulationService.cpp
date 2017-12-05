@@ -74,37 +74,44 @@ void TriangulationService::execute()
 {
    ostringstream xmsg;
 
-   // Instantiate the sensor models and assemble into an MSP list:
-   MSP::CsmSensorModelList csmModelList;
-   m_photoBlock->getCsmModels(csmModelList);
+   try
+   {
+      // Instantiate the sensor models and assemble into an MSP list:
+      MSP::CsmSensorModelList csmModelList;
+      m_photoBlock->getCsmModels(csmModelList);
 
-   // Assemple all ground control points and image points in the photoblock:
-   MSP::GroundPointList mspGroundPts;
-   fillGcpList(mspGroundPts);
+      // Assemple all ground control points and image points in the photoblock:
+      MSP::GroundPointList mspGroundPts;
+      fillGcpList(mspGroundPts);
 
-   MSP::ImagePointList mspImagePts;
-   fillTpList(mspImagePts);
+      MSP::ImagePointList mspImagePts;
+      fillTpList(mspImagePts);
 
-   // Establish all auto and cross covariances for sensor models and GCPs:
-   MSP::JointCovMatrix& jcm = m_photoBlock->getJointCovariance();
-   jcm.setObjects( csmModelList, mspGroundPts );
-   csmModelList.setJointCovMatrix(jcm);
-   jcm.validate(csmModelList, mspGroundPts);
+      // Establish all auto and cross covariances for sensor models and GCPs:
+      MSP::JointCovMatrix jcm = csmModelList.getJointCovMatrix();
+      jcm.setObjects( csmModelList, mspGroundPts );
+      jcm.validate(csmModelList, mspGroundPts);
+      m_photoBlock->setJointCovariance(jcm);
 
-   // Define a blunder strategy:
-   MSP::PES::BlunderStrategy blunderStrategy;
-   //clog<<"\nBlunderStrategy:\n"<<blunderStrategy.toString()<<endl;
+      // Define a blunder strategy:
+      MSP::PES::BlunderStrategy blunderStrategy;
+      //clog<<"\nBlunderStrategy:\n"<<blunderStrategy.toString()<<endl;
 
-   // Pass to MSP triangualtion service:
-   MSP::PES::PointExtractionService pes;
-   m_triangulationResult =
-         shared_ptr<MSP::PES::TriangulationResult>(new MSP::PES::TriangulationResult);
-   pes.triangulate(csmModelList, mspImagePts, jcm, blunderStrategy, *m_triangulationResult);
-   //clog<<"\n"<<m_triangulationResult->toString(true)<<endl;
+      // Pass to MSP triangualtion service:
+      MSP::PES::PointExtractionService pes;
+      m_triangulationResult =
+            shared_ptr<MSP::PES::TriangulationResult>(new MSP::PES::TriangulationResult);
+      pes.triangulate(csmModelList, mspImagePts, jcm, blunderStrategy, *m_triangulationResult);
+      //clog<<"\n"<<m_triangulationResult->toString(true)<<endl;
 
-   // Update photoblock with a posteriori values: SHOULD NOT BE NEEDED AS OBJECTS ARE SHARED
-//   m_photoBlock->setCsmModels(csmModelList);
-//   m_photoBlock->setJointCovariance(m_triangulationResult->getJointCov());
+      // Update photoblock with a posteriori values: SHOULD NOT BE NEEDED AS OBJECTS ARE SHARED
+      //   m_photoBlock->setCsmModels(csmModelList);
+      //   m_photoBlock->setJointCovariance(m_triangulationResult->getJointCov());
+   }
+   catch (exception& e)
+   {
+      ossimNotify(ossimNotifyLevel_FATAL)<<"TriangulationService::execute() -- "<<e.what()<<endl;
+   }
 }
 
 void TriangulationService::fillGcpList(MSP::GroundPointList& mspGroundPts)

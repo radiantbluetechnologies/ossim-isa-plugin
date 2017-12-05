@@ -104,7 +104,7 @@ private:
    std::vector< pair<std::string, std::string> > m_availableModel;
 
 #if OSSIM_HAS_MSP
-   const csm::RasterGM* m_csmModel;
+   csm::RasterGM* m_csmModel;
 #else
    ossimRefPtr<ossimSensorModel> m_sensorModel;
 #endif
