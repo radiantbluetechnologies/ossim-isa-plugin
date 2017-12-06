@@ -13,7 +13,6 @@ node ( "" ) {
                 url: "${GIT_PRIVATE_SERVER_URL}/ossim-isa-plugin.git", 
                 credentialsId: "${GIT_CREDENTIALS_ID}"
             }
-            notifyObj = load "${ env.WORKSPACE }/ossim-ci/jenkins/pipeline/notify.groovy"
         }
 
         echo "WORKSPACE: ${ env.WORKSPACE }"
