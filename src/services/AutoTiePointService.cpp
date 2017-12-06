@@ -169,12 +169,12 @@ void AutoTiePointService::getAlgorithms()
    algoList[0]["name"]        = "crosscorr";
    algoList[0]["description"] = "Matching by cross-correlation of raster patches";
    algoList[0]["label"]       = "Cross Correlation";
-   algoList[1]["name"]        = "descriptor";
-   algoList[1]["description"] = "Matching by feature descriptors";
-   algoList[1]["label"]       = "Descriptor";
-   algoList[2]["name"]        = "nasa";
-   algoList[2]["description"] = "Tiepoint extraction using NASA tool.";
-   algoList[2]["label"]       = "NASA";
+   //algoList[1]["name"]        = "descriptor";
+   //algoList[1]["description"] = "Matching by feature descriptors";
+   //algoList[1]["label"]       = "Descriptor";
+   //algoList[2]["name"]        = "nasa";
+   //algoList[2]["description"] = "Tiepoint extraction using NASA tool.";
+   //algoList[2]["label"]       = "NASA";
 
    m_responseJSON["algorithms"] = algoList;
 }
