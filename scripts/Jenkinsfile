@@ -9,10 +9,10 @@ node ( "" ) {
     try {
         stage( "Checkout" ) {
             dir( "ossim-ci" ) {
-                git branch: "${ OSSIM_GIT_BRANCH }", url: '${GIT_PRIVATE_SERVER_URL}/ossim-ci.git', credentialsId: "${GIT_PRIVATE_CREDENTIALS}"
+                git branch: "${ OSSIM_GIT_BRANCH }", url: '${GIT_PRIVATE_SERVER_URL}/ossim-ci.git', credentialsId: "${GIT_PRIVATE_CREDENTIALS_ID}"
             }
             dir( "ossim-isa-plugin" ) {
-                git branch: "${ OSSIM_GIT_BRANCH }", url: "${GIT_PRIVATE_SERVER_URL}/ossim-isa-plugin.git", credentialsId: "${GIT_PRIVATE_CREDENTIALS}"
+                git branch: "${ OSSIM_GIT_BRANCH }", url: "${GIT_PRIVATE_SERVER_URL}/ossim-isa-plugin.git", credentialsId: "${GIT_PRIVATE_CREDENTIALS_ID}"
             }
             notifyObj = load "${ env.WORKSPACE }/ossim-ci/jenkins/pipeline/notify.groovy"
         }
