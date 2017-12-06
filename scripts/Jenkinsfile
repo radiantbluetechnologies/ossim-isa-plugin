@@ -1,15 +1,3 @@
-//==================================================================================================
-// This is the Jenkins pipeline script for building the OMAR GIT Mirror application.
-// Environment varialbes that MUST be passed in by Jenkins:
-//    OSSIM_GIT_BRANCH: The tag of the branch to be built. Typically dev or master.
-//
-// Environment varaibles that MUST be set in the Jenkins global environment (manage jenkins -> configure system -> environment varaibles)
-//    ARTIFACTORY_USER: The user to use when pushing artifacts
-//    ARTIFACTORY_PASSWORD: The password to use when pushing artifacts
-//    OPENSHIFT_USERNAME: The user to use logging into the docker registry
-//    OPENSHIFT_PASSWORD: The password to use logging into the docker registry
-//==================================================================================================
-
 def notifyObj
 node ( "" ) {
     env.WORKSPACE = pwd()
@@ -21,10 +9,10 @@ node ( "" ) {
     try {
         stage( "Checkout" ) {
             dir( "ossim-ci" ) {
-                git branch: "${ OSSIM_GIT_BRANCH }", url: 'https://github.com/ossimlabs/ossim-ci.git'
+                git branch: "${ OSSIM_GIT_BRANCH }", url: '${GIT_PUBLIC_SERVER_URL}/ossim-ci.git'
             }
             dir( "ossim-isa-plugin" ) {
-                git branch: "${ OSSIM_GIT_BRANCH }", url: "https://github.com/radiantbluetechnologies/ossim-isa-plugin.git"
+                git branch: "${ OSSIM_GIT_BRANCH }", url: "${GIT_PRIVATE_SERVER_URL}/ossim-isa-plugin.git"
             }
             notifyObj = load "${ env.WORKSPACE }/ossim-ci/jenkins/pipeline/notify.groovy"
         }
