@@ -8,10 +8,6 @@ node ( "" ) {
     env.OPENCV_HOME="/usr/local/opencv-3.2"
     try {
         stage( "Checkout" ) {
-            dir( "ossim-ci" ) {
-                git branch: "${ OSSIM_GIT_BRANCH }", 
-                url: '${GIT_PUBLIC_SERVER_URL}/ossim-ci.git'
-            }
             dir( "ossim-isa-plugin" ) {
                 git branch: "${ OSSIM_GIT_BRANCH }", 
                 url: "${GIT_PRIVATE_SERVER_URL}/ossim-isa-plugin.git", 
@@ -23,12 +19,19 @@ node ( "" ) {
         echo "WORKSPACE: ${ env.WORKSPACE }"
 
         stage( "Download Artifacts" ) {
-            dir( "${ env.WORKSPACE }" ) {
-                step ([ $class: "CopyArtifact",
+          dir( "${ env.WORKSPACE }" ) {
+            step ([$class: "CopyArtifact",
+                   projectName: "ossim-ci-${OSSIM_GIT_BRANCH}",
+                   filter: "ossim-ci-${OSSIM_GIT_BRANCH}.tgz",
+                   flatten: true])
+            sh "tar xvfz ossim-ci-${OSSIM_GIT_BRANCH}.tgz"
+            notifyObj = load "${env.WORKSPACE}/ossim-ci/jenkins/pipeline/notify.groovy"
+            
+            step ([ $class: "CopyArtifact",
                     projectName: "ossim-${ OSSIM_GIT_BRANCH }",
                     filter: "artifacts/ossim-install.tgz",
                     flatten: true ])
-            }
+          }
         }
 
         stage( "Build" ) {
