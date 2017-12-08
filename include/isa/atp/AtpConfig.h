@@ -4,6 +4,7 @@
 //     See top level LICENSE.txt file for license information
 //
 //**************************************************************************************************
+
 #pragma once
 
 #include <ostream>
