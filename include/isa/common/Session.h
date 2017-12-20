@@ -8,7 +8,6 @@
 #define Session_HEADER 1
 
 #include <isa/common/JsonInterface.h>
-#include <isa/common/Mensuration.h>
 #include <isa/common/PhotoBlock.h>
 #include <ossim/base/ossimReferenced.h>
 #include <string>
@@ -46,12 +45,6 @@ public:
 
    shared_ptr<PhotoBlock> getPhotoBlock();
 
-   shared_ptr<Mensuration> getMeasurements();
-
-   void addMeasurement(Mensuration* measurement);
-
-   void removeMeasurement(unsigned int measurementId);
-
    const std::string& getSessionId() const { return m_sessionId; }
 
    /*
@@ -70,7 +63,6 @@ private:
    std::string m_sessionId;
    std::string m_description;
    std::shared_ptr<PhotoBlock> m_photoBlock;
-   std::shared_ptr<Mensuration> m_mensuration;
 
 };
 

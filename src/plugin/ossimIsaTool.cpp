@@ -20,6 +20,7 @@
 #if OSSIM_HAS_MSP
 #include <isa/services/msp/SourceSelectionService.h>
 #include <isa/services/msp/TriangulationService.h>
+#include <isa/services/msp/MensurationService.h>
 #endif
 
 #include <iostream>
@@ -177,8 +178,8 @@ bool ossimIsaTool::execute()
          service.reset(new SourceSelectionService);
       else if (serviceName == "triangulation")
          service.reset(new TriangulationService);
-      //   else if (serviceName == "mensuration")
-      //      service.reset(new MensurationService);
+      else if (serviceName == "mensuration")
+         service.reset(new MensurationService);
 #endif
       else
       {

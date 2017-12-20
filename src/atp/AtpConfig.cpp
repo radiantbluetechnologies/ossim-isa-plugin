@@ -380,7 +380,7 @@ bool AtpConfig::readConfig(const string& cn)
    }
    catch (ossimException& e)
    {
-      ossimNotify(ossimNotifyLevel_WARN)<<"AtpConfig::readDefaultConfig():  Could not open/parse "
+      ossimNotify(ossimNotifyLevel_WARN)<<"AtpConfig::readConfig():  Could not open/parse "
             "config file at <"<< configFilename << ">. Error: "<<e.what()<<endl;
       return false;
    }
