@@ -8,6 +8,7 @@
 #define MensurationService_HEADER 1
 
 #include<geometry/GroundPoint.h>
+#include<math/Matrix.h>
 #include <isa/services/ServiceBase.h>
 #include <isa/common/Image.h>
 #include <ossim/base/ossimDpt.h>
@@ -24,10 +25,11 @@ class MensurationService : public ServiceBase
 {
    struct Measurement
    {
+      Measurement() : covariance(2,2) {}
+
       std::string imageId;
       ossimDpt imagePoint;
-      ossimDpt sigmas;
-      double rho;
+      MSP::Matrix covariance;
    };
 
    struct PointObservation
