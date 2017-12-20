@@ -102,7 +102,7 @@ void TriangulationService::execute()
       m_triangulationResult =
             shared_ptr<MSP::PES::TriangulationResult>(new MSP::PES::TriangulationResult);
       pes.triangulate(csmModelList, mspImagePts, jcm, blunderStrategy, *m_triangulationResult);
-      //clog<<"\n"<<m_triangulationResult->toString(true)<<endl;
+      clog<<"\n"<<m_triangulationResult->toString(true)<<endl;
 
       // Update photoblock with a posteriori values: SHOULD NOT BE NEEDED AS OBJECTS ARE SHARED
       //   m_photoBlock->setCsmModels(csmModelList);

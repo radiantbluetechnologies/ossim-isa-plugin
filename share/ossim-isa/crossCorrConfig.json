@@ -61,13 +61,6 @@
          "descr": "Harris corner detector k-factor. ",
          "type": "float",
          "value": 0.04
-      },
-      {
-         "label": "Correlation Step Size ",
-         "name": "corrStepSize",
-         "descr": "Harris corner detector k-factor. ",
-         "type": "float",
-         "value": 0.04
       }
    ]
 }
