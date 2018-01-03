@@ -52,6 +52,11 @@ void MensurationService::loadJSON(const Json::Value& queryRoot)
       //std::shared_ptr<PhotoBlock> photoBlock (session->getPhotoBlock().get());
       //m_imageList = photoBlock->getImageList();
    }
+   else if (queryRoot.isMember("photoblock"))
+   {
+      PhotoBlock pb (queryRoot["photoblock"]);
+
+   }
    else
    {
       if (queryRoot.isMember("images"))

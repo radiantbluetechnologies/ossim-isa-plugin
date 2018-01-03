@@ -16,3 +16,8 @@ set_target_properties(ossim-mspsms PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_
 target_link_libraries( ossim-mspsms ${requiredLibs} )
 INSTALL(TARGETS ossim-mspsms RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR} BUNDLE DESTINATION ${INSTALL_RUNTIME_DIR} COMPONENT ossim)
 
+add_executable(isa-foo isa-foo.cpp )
+set_target_properties(isa-foo PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+target_link_libraries( isa-foo ${requiredLibs} )
+INSTALL(TARGETS ossim-mspsms RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR} BUNDLE DESTINATION ${INSTALL_RUNTIME_DIR} COMPONENT ossim)
+

@@ -148,21 +148,11 @@ bool ossimIsaTool::execute()
       throw ossimException(xmsg.str());
    }
 
-   // Read input:
-   stringstream json_query;
-   streambuf *rqBuf = json_query.rdbuf();
-   (*m_inputStream) >> rqBuf;
    try
    {
+      // Read input into JSON doc:
       Json::Value queryRoot;
-      Json::Reader reader;
-      bool parsingSuccessful = reader.parse( json_query.str(), queryRoot );
-      if ( !parsingSuccessful )
-      {
-         xmsg<<"Failed to parse JSON query string. \n"
-               << reader.getFormattedErrorMessages()<<endl;
-         throw ossimException(xmsg.str());
-      }
+      (*m_inputStream) >> queryRoot;
 
       // Fetch service name and route accordingly:
       string serviceName = queryRoot["service"].asString();
@@ -194,9 +184,7 @@ bool ossimIsaTool::execute()
       service->saveJSON(response);
 
       // Serialize JSON object for return:
-      Json::StyledWriter writer;
-      string json_response = writer.write(response);
-      (*m_outputStream) << json_response;
+      (*m_outputStream) << response;
    }
    catch(ossimException &e)
    {
