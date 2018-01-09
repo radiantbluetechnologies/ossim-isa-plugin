@@ -1,3 +1,5 @@
+# THIS REPO HAS BEEN SUPERCEDED BY ossim-msp-plugin, ossim-isa, and ossim-plugins/atp
+
 # ossim-isa-plugin
 Contains OSSIM plugin in support of 3DISA MERIT project. 
 
